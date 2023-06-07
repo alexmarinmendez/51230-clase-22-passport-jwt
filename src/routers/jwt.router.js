@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { authToken, generateToken } from '../utils.js'
+import passport from 'passport'
 
 const router = Router()
 const users = [
@@ -14,7 +15,7 @@ router.post('/login', (req, res) => {
     res.cookie('myCookieForToken', access_token).json({ status: 'success' })
 })
 
-router.get('/private', authToken, (req, res) => {
+router.get('/private', passport.authenticate('jwt', { session: false }), (req, res) => {
     res.json({ status: 'success', payload: req.user })
 })
 
